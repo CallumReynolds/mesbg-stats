@@ -1,7 +1,8 @@
 let allUnits = [],
-  filteredUnits = [],
-  comparisonUnits = [],
-  sortConfig = { key: 'costPerStat', reverse: false };
+    filteredUnits = [],
+    comparisonUnits = [],
+    sortConfig = { key: 'costPerStat', reverse: false };
+
 async function loadData() {
   try {
     const r = await fetch('./data2024.json'),
@@ -26,6 +27,7 @@ async function loadData() {
       '<tr><td colspan="7" style="color:red;">Error loading data. Make sure data2024.json is in the same directory.</td></tr>';
   }
 }
+
 function processUnit(unit) {
   const m = unit.movement || 0,
     f = unit.fight || 0,
@@ -95,6 +97,7 @@ function processUnit(unit) {
     magicalPowers: unit.magicalPowers || [],
   };
 }
+
 function populateFactionFilter() {
   [...new Set(allUnits.map((u) => u.faction).filter((f) => f))]
     .sort()
@@ -105,6 +108,7 @@ function populateFactionFilter() {
       document.getElementById('factionFilter').appendChild(o);
     });
 }
+
 function applyFilters() {
   const st = document.getElementById('searchInput').value.toLowerCase(),
     ut = Array.from(document.querySelectorAll('.unitTypeFilter:checked')).map(
@@ -121,6 +125,7 @@ function applyFilters() {
   );
   sortTable(sortConfig.key);
 }
+
 function sortTable(key) {
   sortConfig.key === key
     ? (sortConfig.reverse = !sortConfig.reverse)
@@ -145,6 +150,7 @@ function sortTable(key) {
   });
   renderTable();
 }
+
 function renderTable() {
   const tb = document.getElementById('unitTableBody'),
     tc = document.getElementById('totalCount'),
@@ -175,6 +181,18 @@ function renderTable() {
             <td>${unit.name}</td>
             <td>${unit.race}</td>
             <td>${unit.faction}</td>
+            <td>${unit.movement}</td>
+            <td>${unit.fight}</td>
+            <td>${unit.shoot}</td>
+            <td>${unit.strength}</td>
+            <td>${unit.defence}</td>
+            <td>${unit.attack}</td>
+            <td>${unit.wounds}</td>
+            <td>${unit.courage}</td>
+            <td>${unit.intelligence}</td>
+            <td>${unit.might}</td>
+            <td>${unit.will}</td>
+            <td>${unit.fate}</td>
             <td>${unit.points}</td>
             <td>${unit.totalStats}</td>
             <td class="stat-value" style="background:rgba(132,25,18,0.2);">${unit.costPerStat}</td>
@@ -183,6 +201,7 @@ function renderTable() {
     })
     .join('');
 }
+
 function switchTab(tabName) {
   document
     .querySelectorAll('.tab-content')
@@ -194,6 +213,7 @@ function switchTab(tabName) {
   event.target.classList.add('active');
   'factionView' === tabName && renderFactionView();
 }
+
 function addToComparison(unitName) {
   const u = allUnits.find((u) => u.name === unitName);
   u &&
@@ -205,6 +225,7 @@ function addToComparison(unitName) {
   renderComparison();
   switchTab('comparison');
 }
+
 function renderComparison() {
   const cg = document.getElementById('comparisonGrid');
   0 === comparisonUnits.length
@@ -292,10 +313,12 @@ function renderComparison() {
         )
         .join(''));
 }
+
 function removeFromComparison(unitName) {
   comparisonUnits = comparisonUnits.filter((u) => u.name !== unitName);
   renderComparison();
 }
+
 function renderFactionView() {
   [...new Set(allUnits.map((u) => u.faction).filter((f) => f))]
     .sort()
@@ -351,6 +374,7 @@ function renderFactionView() {
       document.getElementById('factionContent').innerHTML += html;
     });
 }
+
 function resetFilters() {
   document.getElementById('searchInput').value = '';
   document
@@ -360,4 +384,5 @@ function resetFilters() {
   document.getElementById('uniqueOnly').checked = false;
   applyFilters();
 }
+
 window.addEventListener('load', loadData);
