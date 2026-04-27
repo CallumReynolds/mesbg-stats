@@ -1,0 +1,165 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MESBG 2024 - Cost-Effectiveness Dashboard</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>⚔️ MESBG 2024 Cost-Effectiveness Dashboard</h1>
+        <p>Analyze Heroes & Warriors - Weighted Stats vs Points Cost</p>
+      </header>
+      <div class="main-content">
+        <div class="sidebar">
+          <h3>🔍 Filters</h3>
+          <div class="filter-group">
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Search unit name..."
+            />
+          </div>
+          <div class="filter-group">
+            <h4 style="color: #b0b0b0; font-size: 12px; margin-bottom: 8px">
+              Unit Type
+            </h4>
+            <label
+              ><input
+                type="checkbox"
+                class="unitTypeFilter"
+                value="Hero"
+                checked
+              />
+              Hero</label
+            ><label
+              ><input
+                type="checkbox"
+                class="unitTypeFilter"
+                value="Infantry"
+                checked
+              />
+              Infantry</label
+            ><label
+              ><input
+                type="checkbox"
+                class="unitTypeFilter"
+                value="Cavalry"
+                checked
+              />
+              Cavalry</label
+            ><label
+              ><input
+                type="checkbox"
+                class="unitTypeFilter"
+                value="Monster"
+                checked
+              />
+              Monster</label
+            ><label
+              ><input
+                type="checkbox"
+                class="unitTypeFilter"
+                value="War Beast"
+                checked
+              />
+              War Beast</label
+            >
+          </div>
+          <div class="filter-group">
+            <label
+              ><input type="checkbox" id="uniqueOnly" /> Show Unique Only</label
+            >
+          </div>
+          <div class="filter-group">
+            <select id="factionFilter">
+              <option value="">-- All Factions --</option>
+            </select>
+          </div>
+          <button onclick="applyFilters()">Apply Filters</button
+          ><button
+            onclick="resetFilters()"
+            style="background: #555; margin-top: 5px"
+          >
+            Reset Filters
+          </button>
+        </div>
+        <div class="content">
+          <div class="tabs">
+            <button class="tab-button active" onclick="switchTab('ranked')">
+              📊 Ranked Units</button
+            ><button class="tab-button" onclick="switchTab('comparison')">
+              🔄 Comparison</button
+            ><button class="tab-button" onclick="switchTab('factionView')">
+              🏰 Faction View
+            </button>
+          </div>
+          <div id="ranked" class="tab-content active">
+            <div class="warning-note">
+              ⚠️ Stat Calculation: Movement + Fight + Strength + Defence +
+              Attack + Wounds + Might + Will + Fate - Shoot - Courage -
+              Intelligence<br />Lower Shoot/Courage/Intelligence scores improve
+              cost efficiency. "N/A" units have 0 or negative total stats.
+            </div>
+            <div class="info-bar">
+              Showing <span id="visibleCount">0</span> of
+              <span id="totalCount">0</span> units • Sorted by Cost/Stat
+              (ascending)
+            </div>
+            <div style="overflow-x: auto">
+              <table>
+                <thead>
+                  <tr>
+                    <th onclick="sortTable('name')">Unit Name</th>
+                    <th onclick="sortTable('race')">Race</th>
+                    <th onclick="sortTable('faction')">Faction</th>
+                    <th onclick="sortTable('points')">Points</th>
+                    <th onclick="sortTable('totalStats')">Total Stats</th>
+                    <th
+                      onclick="sortTable('costPerStat')"
+                      style="background: #841912"
+                    >
+                      Cost/Stat ⬇️
+                    </th>
+                    <th onclick="sortTable('unitType')">Type</th>
+                  </tr>
+                </thead>
+                <tbody id="unitTableBody">
+                  <tr>
+                    <td colspan="7" class="loading">Loading data...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div id="comparison" class="tab-content">
+            <div class="info-bar">
+              Click on units in the main table to add them to the comparison
+              view (max 3 units)
+            </div>
+            <div class="comparison-grid" id="comparisonGrid">
+              <p style="color: #999; grid-column: 1/-1">
+                Select units from the ranked view to compare
+              </p>
+            </div>
+          </div>
+          <div id="factionView" class="tab-content">
+            <div class="info-bar">
+              Compare units within the same faction and see how each performs vs
+              faction average
+            </div>
+            <div id="factionContent" style="overflow-x: auto">
+              <p style="color: #999">Loading faction data...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <footer>
+        Data Source: MESBG 2024 Edition | Last Updated: April 27, 2026
+      </footer>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
